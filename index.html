@@ -1,37 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>everything has an end</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #000;
-      font-family: "Inter", sans-serif;
-      height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-    }
-    .center-text {
-      font-size: 2.5rem;
-      letter-spacing: 1px;
-      font-weight: 400;
-    }
-    .bottom-left {
-      position: fixed;
-      bottom: 20px;
-      left: 20px;
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hub</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    background-color: #000;
+    color: #00ff00;
+    display: flex;
+    height: 100vh;
+  }
+
+  .sidebar {
+    width: 220px;
+    background-color: #111;
+    padding: 20px;
+    box-sizing: border-box;
+    border-right: 2px solid #00ff00;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* donate at bottom */
+  }
+
+  .sidebar a {
+    display: block;
+    color: #00ff00;
+    text-decoration: none;
+    padding: 10px 0;
+    transition: background 0.2s;
+    cursor: pointer;
+  }
+
+  .sidebar a:hover {
+    background-color: #00ff00;
+    color: #000;
+  }
+
+  .content {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+  }
+
+  h1, p, h2, li {
+    color: #00ff00;
+  }
+
+  /* Donate section hidden by default */
+  .donate-section {
+    display: none;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column-reverse; /* coins expand upwards */
+  }
+
+  .donate-item {
+    padding: 5px 0;
+    font-size: 0.9em;
+    word-break: break-all;
+    cursor: pointer;
+  }
+
+  .donate-item:hover {
+    background-color: #00ff00;
+    color: #000;
+  }
+
+  /* Copied flash effect */
+  .copied {
+    font-size: 0.8em;
+    color: #00ff00;
+    background-color: #000; /* black background for visibility */
+    padding: 0 3px;
+    margin-left: 5px;
+    border-radius: 2px;
+    box-shadow: 0 0 6px #00ff00; /* glow effect */
+    animation: flash 1.5s ease-out;
+  }
+
+  @keyframes flash {
+    0% { opacity: 0; }
+    50% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+</style>
 </head>
 <body>
-  <div class="center-text">time is merciless</div>
-  <div class="bottom-left">no need to be known</div>
+
+<div class="sidebar">
+  <div>
+    <h2>Links</h2>
+    <a href="https://www.uefy.xyz/ocr" target="_blank">Image to Text</a>
+    <a href="https://www.uefy.xyz/qr" target="_blank">QR Code Generator</a>
+    <a href="https://www.youtube.com/@uefyy" target="_blank">YouTube</a>
+  </div>
+
+  <div>
+    <div class="donate-section" id="donate-section">
+      <div class="donate-item" data-addr="Lge7PqpWQXcuX77mXgTgEPtaWQUgjGoMZm">Litecoin</div>
+      <div class="donate-item" data-addr="0x93cDAC9D4DE9638280876E3D617D9D0255CDEB2D">Tether (Ethereum)</div>
+      <div class="donate-item" data-addr="bc1qxyqmvj9dac3wthtruyen7pg64mej6hhfuw5tx7">Bitcoin</div>
+      <div class="donate-item" data-addr="0x93cDAC9D4DE9638280876E3D617D9D0255CDEB2D">Ethereum</div>
+    </div>
+    <a id="donate-toggle">Donate</a>
+  </div>
+</div>
+
+<div class="content">
+  <h1>uefy.xyz</h1>
+  <p>I made these sites to help myself sometimes, but they may also be useful to you. You can use the applications on the left.</p>
+  <p>You're welcome.</p>
+</div>
+
+<script>
+  const donateToggle = document.getElementById('donate-toggle');
+  const donateSection = document.getElementById('donate-section');
+
+  donateToggle.addEventListener('click', () => {
+    // Toggle visibility
+    donateSection.style.display = donateSection.style.display === 'flex' ? 'none' : 'flex';
+  });
+
+  const donateItems = document.querySelectorAll('.donate-item');
+
+  donateItems.forEach(item => {
+    item.addEventListener('click', () => {
+      const addr = item.dataset.addr;
+      navigator.clipboard.writeText(addr).then(() => {
+        const copiedMsg = document.createElement('span');
+        copiedMsg.className = 'copied';
+        copiedMsg.textContent = 'COPIED!';
+        item.appendChild(copiedMsg);
+        setTimeout(() => copiedMsg.remove(), 2000); // longer visibility
+      });
+    });
+  });
+</script>
+
 </body>
 </html>
