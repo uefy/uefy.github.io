@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html lang="tr">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>OCR - Image to Text (Final+)</title>
+  <title>OCR - Image to Text</title>
 
   <!-- Tailwind -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- jsPDF (PDF indirme için) -->
+  <!-- jsPDF (PDF download) -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
@@ -20,16 +20,16 @@
 
   <div class="max-w-2xl mx-auto mt-10 p-6 bg-[#1c1c1c] rounded-2xl shadow-xl">
 
-    <h1 class="text-3xl font-bold mb-6 text-center">📄 OCR - Görselden Yazı Çıkarma</h1>
+    <h1 class="text-3xl font-bold mb-6 text-center">📄 OCR - Image to Text</h1>
 
-    <!-- Dosya Yükleme -->
+    <!-- File Upload -->
     <input type="file" id="fileInput"
       class="w-full p-3 bg-[#2b2b2b] border border-gray-700 rounded-xl mb-4">
 
-    <!-- Clipboard Alanı -->
+    <!-- Clipboard Area -->
     <div id="pasteArea"
       class="p-6 text-center border-2 border-dashed border-gray-500 rounded-xl cursor-pointer">
-      📋 Buraya tıkla ve <b>Ctrl + V</b> ile ekran görüntüsü yapıştır
+      📋 Click here and press <b>Ctrl + V</b> to paste a screenshot
     </div>
 
     <img id="preview" class="mt-5 shadow-lg">
@@ -37,40 +37,40 @@
     <!-- Progress -->
     <div id="progress" class="text-center mt-3 text-gray-300"></div>
 
-    <h2 class="text-xl font-semibold mt-6 mb-2">Metin Sonucu:</h2>
+    <h2 class="text-xl font-semibold mt-6 mb-2">Text Output:</h2>
 
-    <!-- Metin alanı -->
+    <!-- Textarea -->
     <textarea id="output"
       class="w-full p-4 bg-[#2b2b2b] rounded-xl min-h-[160px] outline-none"></textarea>
 
-    <!-- Butonlar -->
+    <!-- Buttons -->
     <div class="grid grid-cols-3 gap-3 mt-4">
 
       <button id="copyBtn"
         class="bg-blue-600 hover:bg-blue-700 transition p-3 rounded-xl font-semibold">
-        📋 Kopyala
+        📋 Copy
       </button>
 
       <button id="downloadTxt"
         class="bg-green-600 hover:bg-green-700 transition p-3 rounded-xl font-semibold">
-        ⬇ TXT indir
+        ⬇ Download TXT
       </button>
 
       <button id="downloadPdf"
         class="bg-red-600 hover:bg-red-700 transition p-3 rounded-xl font-semibold">
-        ⬇ PDF indir
+        ⬇ Download PDF
       </button>
 
     </div>
 
-    <!-- Geçmiş -->
-    <h2 class="text-xl font-semibold mt-8">📚 Geçmiş OCR Kayıtları</h2>
+    <!-- History -->
+    <h2 class="text-xl font-semibold mt-8">📚 OCR History</h2>
 
     <div id="history" class="mt-3 space-y-3"></div>
 
     <button id="clearHistory"
       class="mt-4 w-full bg-gray-700 hover:bg-gray-600 p-3 rounded-xl">
-      🗑 Geçmişi Sil
+      🗑 Clear History
     </button>
 
   </div>
@@ -92,7 +92,7 @@
     const historyDiv = document.getElementById('history');
     const clearHistory = document.getElementById('clearHistory');
 
-    // Geçmişi LocalStorage'tan yükleme
+    // Load history from LocalStorage
     function loadHistory() {
       historyDiv.innerHTML = "";
       const list = JSON.parse(localStorage.getItem("ocrHistory") || "[]");
@@ -100,7 +100,7 @@
       list.forEach((item, i) => {
         const box = document.createElement("div");
         box.className = "bg-[#2b2b2b] p-3 rounded-xl cursor-pointer hover:bg-[#333] transition";
-        box.innerText = `📌 Kayıt #${i + 1}\n\n${item.substring(0,200)}...`;
+        box.innerText = `📌 Record #${i + 1}\n\n${item.substring(0,200)}...`;
         box.onclick = () => output.value = item;
         historyDiv.appendChild(box);
       });
@@ -109,7 +109,7 @@
 
     function saveToHistory(text) {
       let list = JSON.parse(localStorage.getItem("ocrHistory") || "[]");
-      list.unshift(text); // En üste ekle
+      list.unshift(text);
       localStorage.setItem("ocrHistory", JSON.stringify(list));
       loadHistory();
     }
@@ -118,18 +118,18 @@
       preview.src = URL.createObjectURL(file);
       preview.style.display = 'block';
 
-      output.value = "İşleniyor...";
-      progress.textContent = "Hazırlanıyor...";
+      output.value = "Processing...";
+      progress.textContent = "Preparing...";
 
-      Tesseract.recognize(file, 'tur', {
+      Tesseract.recognize(file, 'eng', {   // OCR language set to English
         logger: m => {
           if (m.status === "recognizing text") {
-            progress.textContent = "Yükleniyor: % " + Math.floor(m.progress * 100);
+            progress.textContent = "Loading: % " + Math.floor(m.progress * 100);
           }
         }
       }).then(res => {
         output.value = res.data.text;
-        progress.textContent = "✔ Tamamlandı";
+        progress.textContent = "✔ Completed";
         saveToHistory(res.data.text);
       });
     }
@@ -145,17 +145,17 @@
           return;
         }
       }
-      alert("Panoda resim bulunamadı!");
+      alert("No image found in clipboard!");
     });
 
-    // Kopyala
+    // Copy
     copyBtn.addEventListener('click', () => {
       navigator.clipboard.writeText(output.value);
-      copyBtn.innerText = "✔ Kopyalandı!";
-      setTimeout(() => copyBtn.innerText = "📋 Kopyala", 1500);
+      copyBtn.innerText = "✔ Copied!";
+      setTimeout(() => copyBtn.innerText = "📋 Copy", 1500);
     });
 
-    // TXT indir
+    // Download TXT
     downloadTxt.addEventListener('click', () => {
       const blob = new Blob([output.value], { type: "text/plain" });
       const a = document.createElement("a");
@@ -164,7 +164,7 @@
       a.click();
     });
 
-    // PDF indir
+    // Download PDF
     downloadPdf.addEventListener('click', () => {
       const { jsPDF } = window.jspdf;
       const pdf = new jsPDF();
@@ -172,9 +172,9 @@
       pdf.save("ocr.pdf");
     });
 
-    // Geçmişi sil
+    // Clear History
     clearHistory.addEventListener('click', () => {
-      if (confirm("Tüm geçmiş silinsin mi?")) {
+      if (confirm("Clear all history?")) {
         localStorage.removeItem("ocrHistory");
         loadHistory();
       }
