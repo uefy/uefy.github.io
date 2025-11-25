@@ -70,9 +70,36 @@
         p {
             color: #888;
         }
+
+        /* Küçük, sabit Hub butonu */
+        #hubBtn {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            width: 50px;
+            height: 30px;
+            font-size: 12px;
+            background-color: #bb86fc;
+            color: #121212;
+            font-weight: bold;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            z-index: 9999;
+            text-align: center;
+            line-height: 30px;
+            padding: 0;
+        }
+
+        #hubBtn:hover {
+            background-color: #9b5de5;
+        }
     </style>
 </head>
 <body>
+
+    <!-- Hub Button -->
+    <button id="hubBtn" onclick="window.location.href='https://uefy.xyz';">Hub</button>
 
     <h1>QR Code Generator & Reader</h1>
 
