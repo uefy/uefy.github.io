@@ -2,136 +2,59 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Hub</title>
+<title>uefy.xyz</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-  body {
-    margin: 0;
-    font-family: 'Courier New', Courier, monospace;
-    background-color: #000;
-    color: #00ff00;
-    display: flex;
-    height: 100vh;
-  }
-
-  .sidebar {
-    width: 220px;
-    background-color: #111;
-    padding: 20px;
-    box-sizing: border-box;
-    border-right: 2px solid #00ff00;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between; /* donate at bottom */
-  }
-
-  .sidebar a {
-    display: block;
-    color: #00ff00;
-    text-decoration: none;
-    padding: 10px 0;
-    transition: background 0.2s;
-    cursor: pointer;
-  }
-
-  .sidebar a:hover {
-    background-color: #00ff00;
-    color: #000;
-  }
-
-  .content {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-  }
-
-  h1, p, h2, li {
-    color: #00ff00;
-  }
-
-  /* Donate section hidden by default */
-  .donate-section {
-    display: none;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column-reverse; /* coins expand upwards */
-  }
-
-  .donate-item {
-    padding: 5px 0;
-    font-size: 0.9em;
-    word-break: break-all;
-    cursor: pointer;
-  }
-
-  .donate-item:hover {
-    background-color: #00ff00;
-    color: #000;
-  }
-
-  /* Copied flash effect */
-  .copied {
-    font-size: 0.8em;
-    color: #00ff00;
-    background-color: #000; /* black background for visibility */
-    padding: 0 3px;
-    margin-left: 5px;
-    border-radius: 2px;
-    box-shadow: 0 0 6px #00ff00; /* glow effect */
-    animation: flash 1.5s ease-out;
-  }
-
-  @keyframes flash {
-    0% { opacity: 0; }
-    50% { opacity: 1; }
-    100% { opacity: 0; }
-  }
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: #000;
+  color: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+.container {
+  max-width: 480px;
+  margin: 96px auto;
+  padding: 24px;
+}
+h1 {
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 6px;
+}
+p {
+  font-size: 14px;
+  color: #777;
+  margin-top: 0;
+  margin-bottom: 32px;
+}
+a {
+  display: block;
+  margin: 10px 0;
+  color: #fff;
+  text-decoration: none;
+  font-size: 15px;
+}
+a:hover {
+  opacity: 0.6;
+}
+footer {
+  margin-top: 48px;
+  font-size: 12px;
+  color: #333;
+}
 </style>
 </head>
 <body>
+  <div class="container">
+    <h1></h1>
+    <p></p>
 
-<div class="sidebar">
-  <div>
-    <h2>Links</h2>
-    <a href="https://www.uefy.xyz/ocr" target="_blank">Image to Text</a>
-    <a href="https://www.uefy.xyz/qr" target="_blank">QR Code Generator</a>
-    <a href="https://www.uefy.xyz/cat" target="_blank">CAT GENERATOR!</a>
+    <a href="https://uefy.xyz">the problem is you think you have time</a>
+
+    <footer>you don't</footer>
   </div>
-
-
-</div>
-
-<div class="content">
-  <h1>uefy.xyz</h1>
-  <p>send me ur cat via discord: u3fy</p>
-  <p>me: yo</p>
-  <p>yo: gurt</p>
-</div>
-
-<script>
-  const donateToggle = document.getElementById('donate-toggle');
-  const donateSection = document.getElementById('donate-section');
-
-  donateToggle.addEventListener('click', () => {
-    // Toggle visibility
-    donateSection.style.display = donateSection.style.display === 'flex' ? 'none' : 'flex';
-  });
-
-  const donateItems = document.querySelectorAll('.donate-item');
-
-  donateItems.forEach(item => {
-    item.addEventListener('click', () => {
-      const addr = item.dataset.addr;
-      navigator.clipboard.writeText(addr).then(() => {
-        const copiedMsg = document.createElement('span');
-        copiedMsg.className = 'copied';
-        copiedMsg.textContent = 'COPIED!';
-        item.appendChild(copiedMsg);
-        setTimeout(() => copiedMsg.remove(), 2000); // longer visibility
-      });
-    });
-  });
-</script>
-
 </body>
 </html>
